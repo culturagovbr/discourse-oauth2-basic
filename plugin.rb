@@ -36,7 +36,7 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
                         }
                         opts[:authorize_options] = SiteSetting.oauth2_authorize_options.split("|").map(&:to_sym)
                         # opts[:scope] = 'profile'
-			opts[:scope] = SiteSetting.oauth2_scope_options.split("|").map(&:to_sym)
+			opts[:scope] = 'openid sub full_name'
 
                         if SiteSetting.oauth2_send_auth_header?
                           opts[:token_params] = { headers: { 'Authorization' => basic_auth_header } }
