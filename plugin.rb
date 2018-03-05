@@ -1,8 +1,8 @@
-# name: discourse-oauth2-basic
-# about: Generic OAuth2 Plugin
-# version: 0.2
-# authors: Robin Ward
-# url: https://github.com/discourse/discourse-oauth2-basic
+# name: discourse-oauth2-idCultura
+# about: idCultura OAuth2 Plugin
+# version: 0.1
+# authors: Robin Ward, André "decko" de Brito
+# url: https://github.com/culturagovbr/discourse-oauth2-basic
 
 require_dependency 'auth/oauth2_authenticator.rb'
 
@@ -35,7 +35,8 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
                           token_url: SiteSetting.oauth2_token_url
                         }
                         opts[:authorize_options] = SiteSetting.oauth2_authorize_options.split("|").map(&:to_sym)
-                        opts[:scope] = 'profile'
+                        # opts[:scope] = 'profile'
+			opts[:scope] = SiteSetting.oauth2_scope_options.split("|").map(&:to_sym)
 
                         if SiteSetting.oauth2_send_auth_header?
                           opts[:token_params] = { headers: { 'Authorization' => basic_auth_header } }
@@ -70,7 +71,8 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
   end
 
   def fetch_user_details(token, id)
-    user_json_url = SiteSetting.oauth2_user_json_url.sub(':token', token.to_s).sub(':id', id.to_s)
+    user_json_url = SiteSetting.oauth2_user_json_url
+    # user_json_url = SiteSetting.oauth2_user_json_url.sub(':token', token.to_s).sub(':id', id.to_s)
 
     log("user_json_url: #{user_json_url}")
 
